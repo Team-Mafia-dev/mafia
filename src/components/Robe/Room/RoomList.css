@@ -1,0 +1,8 @@
+/* src/components/RoomList.css */
+.room-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 800px; /* 카드 리스트의 최대 너비 */
+  margin: 0 auto; /* 가운데 정렬 */
+}

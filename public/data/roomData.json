@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "no": 1,
+    "title": "ㄹㅇ초보만 오셈",
+    "status": "대기중",
+    "maxPlayers": 6
+  },
+  {
+    "id": 2,
+    "no": 2,
+    "title": "뉴비만 오셈",
+    "status": "게임중",
+    "maxPlayers": 8
+  },
+  {
+    "id": 3,
+    "no": 3,
+    "title": "고인물 방",
+    "status": "게임중",
+    "maxPlayers": 8
+  },
+  {
+    "id": 4,
+    "no": 4,
+    "title": "뉴비만 오라고",
+    "status": "대기중",
+    "maxPlayers": 6
+  },
+  {
+    "id": 5,
+    "no": 5,
+    "title": "다 덤벼",
+    "status": "대기중",
+    "maxPlayers": 6
+  }
+]
