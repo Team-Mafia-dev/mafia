@@ -3,18 +3,18 @@ import React, { useState } from "react";
 import "./Login.css";
 
 const Login = ({ onLogin }) => {
-  const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      setError("이메일과 비밀번호를 입력해주세요.");
+    if (!userId || !password) {
+      setError("아이디와 비밀번호를 입력해주세요.");
       return;
     }
     // 로그인 로직을 실행
-    onLogin(email, password);
+    onLogin(userId, password);
     //console.log("email : ", email, "password : ", password);
   };
 
@@ -24,13 +24,13 @@ const Login = ({ onLogin }) => {
         <h2>로그인</h2>
         {error && <div className="error-message">{error}</div>}
         <div className="input-group">
-          <label htmlFor="email">이메일</label>
+          <label htmlFor="email">아이디</label>
           <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="이메일을 입력하세요"
+            type="text"
+            id="userId"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+            placeholder="아이디를 입력하세요"
           />
         </div>
         <div className="input-group">
