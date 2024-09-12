@@ -5,7 +5,8 @@ import Content from "./components/Content";
 import Footer from "./components/Footer";
 import LoginPage from "./components/Login/LoginPage";
 import SignupPage from "./components/Signup/SignupPage";
-import Robe from "./components/Robe/Robe";
+import Lobby from "./components/Lobby/Lobby";
+import Room from "./components/Lobby/Room/Room";
 import NotFound from "./components/NotFound";
 import "./App.css";
 
@@ -22,7 +23,8 @@ function App() {
           <Route path="/" element={<Content />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signup" element={<SignupPage />}></Route>
-          <Route path="/robe" element={<Robe />}></Route>
+          <Route path="/lobby" element={<Lobby />}></Route>
+          <Route path="/room/:nomberParams" element={<Room />} />
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
         <Footer />

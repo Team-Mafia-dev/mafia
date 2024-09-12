@@ -1,13 +1,13 @@
 import React from "react";
 import LoginForm from "./LoginForm";
 import { useNavigate } from "react-router-dom";
-import {FetchUtil} from "../Util/FetchUtil";
+import { FetchUtil } from "../Util/FetchUtil";
 
 function LoginPage() {
   const navigate = useNavigate(); //navigate 훅 가져옴
   const handleLogin = async (userId, password) => {
     try {
-      const postData = {userId: userId, pw: password};
+      const postData = { userId: userId, pw: password };
       // const response = await fetch('http://localhost:8080/auth/login', {
       //   method: 'POST',
       //   headers: {
@@ -15,10 +15,14 @@ function LoginPage() {
       //   },
       //   body: JSON.stringify(postData),
       // });
-      const result = await FetchUtil('http://localhost:8080/auth/login', 'POST', postData);
+      const result = await FetchUtil(
+        "http://localhost:8080/auth/login",
+        "POST",
+        postData
+      );
       if (result.isSuccess) {
         alert(result.msg);
-        navigate("/robe");
+        navigate("/lobby");
       } else {
         alert(result.msg);
       }

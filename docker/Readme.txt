@@ -8,8 +8,7 @@ Docker-compose stop			// 컨테이너 내리기
 
 
 
-
-docker cp /path/to/mafiadb_backup.sql database:/dumpfile.sql	// 덤프파일 생성
+docker cp mafiadb_backup.sql database:/dumpfile.sql	// 덤프파일 생성
 
 docker exec -it database mariadb -u root -p	// 컨테이너의 데이터베이스 접속
 USE MAFIA;					// 마피아 데이터베이스 접속
