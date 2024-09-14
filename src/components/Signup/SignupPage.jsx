@@ -1,30 +1,18 @@
 import React from "react";
 import SignupForm from "./SignupForm";
 import { useNavigate } from "react-router-dom";
+import { FetchData } from "../Util/FetchData";
 
 function SignupPage() {
   const navigate = useNavigate(); //navigate 훅 가져옴
   const handleSignup = async (id, password, nickname) => {
-    try {
-      const postData = {userId: id, pw: password, userNm: nickname};
-      const response = await fetch('http://localhost:8080/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(postData),
-      });
-      const result = await response.json();
-      if (result.isSuccess) {
-        alert(result.msg);
-        navigate("/login");
-      } else {
-        alert(result.msg);
-      }
-    } catch (error) {
-      alert("회원가입에 실패하였습니다.(에러)");
-    }
-
+    const postData = {userId: id, pw: password, userNm: nickname};
+    // 회원가입
+    const result = await FetchData(process.env.REACT_APP_API_SIGNUP, postData);
+    // 회원가입 성공 시 로그인으로 이동
+    if (result.isSuccess) {  
+      navigate("/login");
+    } 
   };
   return (
     <>
@@ -34,3 +22,4 @@ function SignupPage() {
 }
 
 export default SignupPage;
+
