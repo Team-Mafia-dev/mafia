@@ -5,6 +5,7 @@
   position: absolute;
   bottom: 0;
   width: 100%;
+  padding-top: 60px; /* 높이만큼 상단 여백 추가 */
 }
 .plus-button {
   background-color: lightslategray;

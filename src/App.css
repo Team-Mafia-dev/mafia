@@ -7,7 +7,11 @@
 
 body {
   padding-top: 60px; /* 높이만큼 상단 여백 추가 */
+
   overflow: hidden; /* 스크롤바 숨김 */
+
+  margin: 0;
+  font-family: "Lato", sans-serif;
 }
 
 header {
