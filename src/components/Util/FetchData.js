@@ -29,14 +29,11 @@ export const FetchData = async (
       };
     }
 
-    // 최종 옵션 병합
-    //const finalOptions = { ...defaultOptions, ...options };
-    
     console.log(process.env.REACT_APP_API_BASE + url);
 
     try {
       const response = await fetch(process.env.REACT_APP_API_BASE + url, options);
-
+      console.log(response.status);
       const result = await response.json();
 
       if (!result.isSuccess) {

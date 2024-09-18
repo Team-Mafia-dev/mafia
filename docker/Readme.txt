@@ -9,7 +9,7 @@ docker-compose up
 
 -- 새로 pull한 뒤 첫 설정.
 -- 1. 터미널 실행
-Docker-compose stop			// 컨테이너 내리기
+docker-compose stop			// 컨테이너 내리기
 docker stop $(docker ps -aq) // 도커 컨테이너 모두 중지
 docker rm $(docker ps -aq) // 도커 컨테이너 모두 삭제
 
