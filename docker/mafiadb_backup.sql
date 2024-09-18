@@ -27,7 +27,7 @@ CREATE TABLE `ROOM_INFO` (
   `roomSeqno` int(4) NOT NULL,
   `roomName` varchar(14) DEFAULT '',
   `isDel` tinyint(1) DEFAULT 0,
-  `isStart` tinyint(1) DEFAULT 0,
+  `isStarted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`roomDate`,`roomSeqno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -41,7 +41,12 @@ LOCK TABLES `ROOM_INFO` WRITE;
 INSERT INTO `ROOM_INFO` VALUES
 ('2024-09-12',1,NULL,0,0),
 ('2024-09-14',1,'테스트입니다.',0,0),
-('2024-09-14',2,'테스트입니다.',0,0);
+('2024-09-14',2,'테스트입니다.',0,0),
+('2024-09-16',1,'테스트입니다.',0,0),
+('2024-09-18',2,'테스트입니다.',1,0),
+('2024-09-18',3,'가나다',0,1),
+('2024-09-18',4,'테스트입니다.',0,0),
+('2024-09-18',5,'테스트입니다.',0,0);
 /*!40000 ALTER TABLE `ROOM_INFO` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,4 +89,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-14 13:49:36
+-- Dump completed on 2024-09-18 18:20:18

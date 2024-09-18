@@ -66,6 +66,7 @@ function LoginPage() {
     GetRoomList(queryParams);
   }
 
+  // 새로고침(검색 반영 X)
   const ReloadRoomList = () => {
     const queryParams = new URLSearchParams();
     queryParams.append('stateType', stateType);
@@ -73,10 +74,12 @@ function LoginPage() {
     GetRoomList(queryParams);
   }
 
+  // 방 정보 가져오기
   const GetRoomList = async (queryParams) => {
     const result = await FetchData(`room/list?${queryParams}`);
+    console.log()
     if (result.isSuccess) {
-      console.log("방 정보 가져오기 성공");
+      console.log(result.data);
     }
   }
   // [END] 로비 테스트
