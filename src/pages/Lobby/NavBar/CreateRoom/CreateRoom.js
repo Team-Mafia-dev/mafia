@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import { FetchData } from "components/Util/FetchData";
 import "./CreateRoom.css"
+
+ 
 
 const CreateRoom = ({ closeCreateRoomModal }) => {
   // 모달창 닫히는 함수 props로 가져오기
@@ -18,7 +21,19 @@ const CreateRoom = ({ closeCreateRoomModal }) => {
     }
     // 방 생성을 완료해서 데이터 후처리 해야함.
     //createRoom(title);
-    alert("방 생성 완료됨")
+    RegisterRoom();
+  };
+
+  // 방 생성하기
+  const RegisterRoom = async () => {
+    // TODO 방 이름 파라미터로 받아서 대입시키기
+    const postData = { roomName: "테스트입니다." };
+    const result = await FetchData("room/register", postData);
+
+    if (result.isSuccess) {
+      alert("방 생성을 완료하였습니다.");
+      // TODO 게임 화면으로 이동
+    }
   };
 
   return (

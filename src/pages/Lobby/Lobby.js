@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import RoomList from "./Room/RoomList";
 import NavBar from "./NavBar/NavBar"
+import Profile from "./Profile/Profile";
+import "./Lobby.css";
 
 
 //RoomList 컴포넌트에 방번호, 방제목, 방상태, 제한인원 정보를 전달해야한다. 서버와의 통신 필요 지금은 임의로 부여하겠다.
 
-function Robe() {
+function Lobby() {
   const [data, setData] = useState([]);
   //useEffect로 rommData.json 파일의 변화를 감지하고 있다.
   useEffect(() => {
@@ -17,14 +19,12 @@ function Robe() {
   return (
     <container>
       <NavBar/>
-      <main>
-      
-        
+      <main className="lobby-main">
         <RoomList rooms={data} />
+        <Profile/>
       </main>
-    <section className="user-profile-section">porfile</section>
     </container>
   );
 }
 
-export default Robe;
+export default Lobby;

@@ -14,6 +14,7 @@ import Room from "./pages/Room";
 
 import "./App.css";
 import theme from "./styles/theme";
+import {UserProvider} from 'context/userContext';
 
 // 로그인 절차 부터 로비 창 이동까지는 굳이 싱글페이지로 만들 필요 없다고 생각.
 // 접속하면 로그인 창이 뜸 -> 로그인 성공하면 로비 창으로 이동
@@ -22,6 +23,7 @@ import theme from "./styles/theme";
 function App() {
   return (
     <ThemeProvider theme={theme}>
+    <UserProvider>
       <div className="App">
         <BrowserRouter>
           <Header />
@@ -36,6 +38,7 @@ function App() {
           <Footer />
         </BrowserRouter>
       </div>
+    </UserProvider>
     </ThemeProvider>
   );
 }

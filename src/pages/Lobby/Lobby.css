@@ -1,0 +1,5 @@
+.lobby-main{
+  display: flex;
+  gap: 50px;
+  margin: 2vh 10vw;
+}

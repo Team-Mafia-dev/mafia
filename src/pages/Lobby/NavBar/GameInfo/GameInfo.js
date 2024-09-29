@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Collapsible from "../../../../components/Collapsible/Collapsible"
+import Collapsible from "components/Collapsible/Collapsible"
 
 const GameInfo = ({ closeGameInfoModal }) => {
   // 모달창 닫히는 함수 props로 가져오기
