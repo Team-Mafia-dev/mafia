@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-// import socket from "./server";
 import { useParams } from "react-router-dom";
-import MessageContainer from "./MessageContainer/MessageContainer";
-import InputField from "./InputField/InputField";
-import Socket from "./server";
-import "./Room.css";
+import MessageContainer from "../components/MessageContainer/MessageContainer";
+import InputField from "../components/InputField/InputField";
+import Socket from "../components/Util/server";
+import "./styles/Room.css";
 
 //여기서 소캣 통신 하면됨
 // Room UI

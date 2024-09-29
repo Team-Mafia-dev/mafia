@@ -8,18 +8,15 @@
 
 .navbar-container {
   display: flex;
-  justify-content: space-around; /* 아이템들 사이에 동일한 간격 배치 */
+  justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px;
   background-color: #333; /* 네비게이션 바 배경색 */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 네비게이션 바 그림자 */
 }
 /*프로필 스타일*/
 .userProfile {
-  position: fixed;
-  padding: 5px;
-  bottom: 25px;
-  left: -webkit-calc(50% -100px);
+  padding: 0px;
   background-color: #555;
   width: 255px;
   height: 100px;

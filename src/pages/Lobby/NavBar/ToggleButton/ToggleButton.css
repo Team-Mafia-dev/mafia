@@ -1,0 +1,37 @@
+.toggle-container{
+  display: flex;
+  align-items: center;
+  gap: 1vh;
+}
+.toggle-button {
+  width: 60px;
+  height: 30px;
+  background-color: #ccc;
+  border-radius: 30px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toggle-button.active {
+  background-color: #4caf50; /* 토글되면 배경색이 바뀜 */
+}
+
+.toggle-circle {
+  width: 28px;
+  height: 28px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  transition: left 0.3s;
+}
+
+.toggle-button.active .toggle-circle {
+  left: 31px; /* 오른쪽으로 이동 */
+}
+
+.toggle-text{
+  width: 80px;
+}

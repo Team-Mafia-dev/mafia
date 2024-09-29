@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import RoomList from "./Room/RoomList";
+import NavBar from "./NavBar/NavBar"
+
 
 //RoomList 컴포넌트에 방번호, 방제목, 방상태, 제한인원 정보를 전달해야한다. 서버와의 통신 필요 지금은 임의로 부여하겠다.
 
@@ -13,11 +15,15 @@ function Robe() {
       .catch((error) => console.error("Error loading JSON:", error));
   }, []);
   return (
-    <>
-      <section>
+    <container>
+      <NavBar/>
+      <main>
+      
+        
         <RoomList rooms={data} />
-      </section>
-    </>
+      </main>
+    <section className="user-profile-section">porfile</section>
+    </container>
   );
 }
 

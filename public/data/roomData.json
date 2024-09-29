@@ -33,5 +33,34 @@
     "title": "다 덤벼",
     "status": "대기중",
     "maxPlayers": 6
+  },
+  {
+    "id": 6,
+    "no": 6,
+    "title": "다 덤벼",
+    "status": "대기중",
+    "maxPlayers": 6
+  },
+  {
+    "id": 7,
+    "no": 7,
+    "title": "다 덤벼",
+    "status": "대기중",
+    "maxPlayers": 6
+  },
+  {
+    "id": 8,
+    "no": 8,
+    "title": "다 덤벼",
+    "status": "대기중",
+    "maxPlayers": 6
+  },
+  {
+    "id": 9,
+    "no": 9,
+    "title": "다 덤벼",
+    "status": "대기중",
+    "maxPlayers": 6
   }
+  
 ]

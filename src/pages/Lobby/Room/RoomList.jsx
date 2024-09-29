@@ -12,7 +12,7 @@ const RoomList = ({ rooms }) => {
           no={room.no}
           title={room.title}
           status={room.status}
-          maxPlayers={room.maxPlayers}
+          currPlayers={room.currPlayers}
         />
       ))}
     </div>

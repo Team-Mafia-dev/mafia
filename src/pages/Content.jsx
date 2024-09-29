@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./Content.css";
+import "./styles/Content.css";
 
 function Content() {
   //react의 public 폴더 구조 특유의 이미지 파일 가져오는 방법

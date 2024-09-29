@@ -6,16 +6,16 @@
 }
 
 body {
-  padding-top: 60px; /* 높이만큼 상단 여백 추가 */
+  /* padding-top: 60px; 높이만큼 상단 여백 추가 */
 
-  overflow: hidden; /* 스크롤바 숨김 */
+  /* overflow: hidden; 스크롤바 숨김 */
 
   margin: 0;
   font-family: "Lato", sans-serif;
 }
 
 header {
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
@@ -36,7 +36,7 @@ footer {
   background-color: #282c34;
   padding: 10px;
   color: white;
-  position: fixed;
+  position: relative;
   width: 100%;
   bottom: 0;
 }
