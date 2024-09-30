@@ -14,11 +14,13 @@ function LoginPage() {
       const result = await FetchData(process.env.REACT_APP_API_LOGIN, postData);
 
       if (result.isSuccess) {
+        alert("로그인되었습니다.");
         navigate("/lobby");
-        alert("로그인 완료(세션갱신)");
+      }else{
+        alert(result.msg);
       }
     } catch (error) {
-      console.error("Fetch Error:", error);
+      alert("로그인에 실패하였습니다.");
       throw error;
     }
   };
