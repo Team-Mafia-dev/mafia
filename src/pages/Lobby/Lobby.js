@@ -16,6 +16,7 @@ function Lobby() {
       .then((jsonData) => setData(jsonData))
       .catch((error) => console.error("Error loading JSON:", error));
   }, []);
+
   return (
     <container>
       <NavBar/>
