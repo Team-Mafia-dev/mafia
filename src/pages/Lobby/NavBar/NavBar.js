@@ -11,12 +11,12 @@ function NavBar() {
   const [gameInfoModalCondition, setGameInfoModalCondition] = useState(false);
 //모달창은 초기화면에서는 보이지 않기 때문에 초깃값은 false
 
-const closeCreateRoomModal = () => {
+const openCreateRoomModal = () => {
 	setCreateRoomModalCondition(false)
   //또는 
   setCreateRoomModalCondition(!createRoomModalCondition)
 }
-const closeGameInfoModal = () => {
+const openGameInfoModal = () => {
 	setGameInfoModalCondition(false)
   //또는 
   setGameInfoModalCondition(!gameInfoModalCondition)
@@ -34,13 +34,13 @@ const ReloadRoomList = () => {
   return (
     <>
     <div className="topnav">
-      <button onClick={closeGameInfoModal}>게임 설명</button>
+      <button onClick={openGameInfoModal}>게임 설명</button>
       <button >모달1</button>
       <button >모달2</button>
       
       <section className="search-container">
         <div>
-          <button onClick={closeCreateRoomModal}>방 만들기</button>
+          <button onClick={openCreateRoomModal}>방 만들기</button>
           <button onClick={ReloadRoomList}>새로고침</button>
         </div>
         {/* 방 필터 대기중인 방과 나머지로 구분하는게 효율적일듯 함 토글형식으로 바꾸겠음*/}
