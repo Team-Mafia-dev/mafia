@@ -90,6 +90,7 @@ function Lobby() {
           }}>{/* url 활용해서 검색 가능 */}
             <input type="text" placeholder="Search.." name="search" value={searchQuery}
         onChange={handleSearchChange}/>
+        
             <button type="submit">
               <i className="fa fa-search"></i>
             </button>

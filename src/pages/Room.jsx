@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import MessageContainer from "../components/MessageContainer/MessageContainer";
 import InputField from "../components/InputField/InputField";
-import Socket from "../components/Util/server";
+// import Socket from "../components/Util/server";
 import "./styles/Room.css";
 
 //여기서 소캣 통신 하면됨
@@ -18,21 +18,21 @@ const Room = () => {
   // console.log("nomberParams :", nomberParams); 현재 URL 중 no 부분을 받아옴.
 
   useEffect(() => {
-    Socket.on("message", (message) => {
-      setMessageList((prevState) => prevState.concat(message));
-    });
-    askUserName();
-  });
+    // Socket.on("message", (message) => {
+    //   setMessageList((prevState) => prevState.concat(message));
+    // });
+    // askUserName();
+  },[]);
 
   //서버가 login 요청을 받아 userName을 알려줌
-  const askUserName = () => {
-    Socket.on("login", (res) => {
-      if (res?.ok) {
-        const userName = res.userName;
-        setUser(userName);
-      }
-    });
-  };
+  // const askUserName = () => {
+  //   Socket.on("login", (res) => {
+  //     if (res?.ok) {
+  //       const userName = res.userName;
+  //       setUser(userName);
+  //     }
+  //   });
+  // };
 
   const sendMessage = (event) => {};
   return (

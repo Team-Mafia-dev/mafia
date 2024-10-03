@@ -27,7 +27,7 @@ const CreateRoom = ({ closeCreateRoomModal }) => {
   // 방 생성하기
   const RegisterRoom = async () => {
     // TODO 방 이름 파라미터로 받아서 대입시키기
-    const postData = { roomName: "테스트입니다." };
+    const postData = { roomName: title };
     const result = await FetchData("room/register", postData);
 
     if (result.isSuccess) {
