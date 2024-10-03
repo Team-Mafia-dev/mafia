@@ -7,7 +7,7 @@ const ToggleButton = ({setStateType}) => {
   // 대기 중과 게임 중을 토글하는 함수
   const handleToggle = () => {
     setIsToggled(!isToggled);
-    setStateType(isToggled ? 1 : 0);
+    setStateType(isToggled ? 0 : 1);
   };
   
   return (

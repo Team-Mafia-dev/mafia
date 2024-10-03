@@ -4,7 +4,7 @@ import "./RoomCard.css";
 
 // Room UI
 // Link - useParams함수를 이용해 매개변수를 읽어 올 수 있음.
-const RoomCard = ({ no, title, status, currPlayers }) => {
+const RoomCard = ({ no, title, state, currPlayers }) => {
   // if (status !== "게임중") {
   //   const roomLink = `${no}room`;
   // }
@@ -13,7 +13,7 @@ const RoomCard = ({ no, title, status, currPlayers }) => {
     <Link to={`/room/${no}`} className="room-card">
       <div className="room-card-top">
         <p className="room-card-no">No. {no}</p>
-        <button className="room-card-status">{status}</button>
+        <button className="room-card-state">{state}</button>
       </div>
       <div className="room-card-bottom">
         <p className="room-card-title">{title}</p>

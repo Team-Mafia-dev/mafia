@@ -3,63 +3,63 @@
     "id": 1,
     "no": 1,
     "title": "ㄹㅇ초보만 오셈",
-    "status": "대기중",
+    "state": 0,
     "maxPlayers": 6
   },
   {
     "id": 2,
     "no": 2,
     "title": "뉴비만 오셈",
-    "status": "게임중",
+    "state": 1,
     "maxPlayers": 8
   },
   {
     "id": 3,
     "no": 3,
     "title": "고인물 방",
-    "status": "게임중",
+    "state": 1,
     "maxPlayers": 8
   },
   {
     "id": 4,
     "no": 4,
     "title": "뉴비만 오라고",
-    "status": "대기중",
+    "state": 0,
     "maxPlayers": 6
   },
   {
     "id": 5,
     "no": 5,
-    "title": "다 덤벼",
-    "status": "대기중",
+    "title": "다 덤벼라",
+    "state": 0,
     "maxPlayers": 6
   },
   {
     "id": 6,
     "no": 6,
     "title": "다 덤벼",
-    "status": "대기중",
+    "state": 0,
     "maxPlayers": 6
   },
   {
     "id": 7,
     "no": 7,
-    "title": "다 덤벼",
-    "status": "대기중",
+    "title": "다 덤뷔",
+    "state": 1,
     "maxPlayers": 6
   },
   {
     "id": 8,
     "no": 8,
-    "title": "다 덤벼",
-    "status": "대기중",
+    "title": "다 덤벼슬",
+    "state": 1,
     "maxPlayers": 6
   },
   {
     "id": 9,
     "no": 9,
-    "title": "다 덤벼",
-    "status": "대기중",
+    "title": "다 덤비던가",
+    "state": 0,
     "maxPlayers": 6
   }
   
