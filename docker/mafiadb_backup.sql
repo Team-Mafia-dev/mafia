@@ -46,7 +46,12 @@ INSERT INTO `ROOM_INFO` VALUES
 ('2024-09-18',2,'테스트입니다.',1,0),
 ('2024-09-18',3,'가나다',0,1),
 ('2024-09-18',4,'테스트입니다.',0,0),
-('2024-09-18',5,'테스트입니다.',0,0);
+('2024-09-18',5,'테스트입니다.',0,0),
+('2024-10-03',1,'테스트입니다.',0,0),
+('2024-10-05',1,'aaa',0,1),
+('2024-10-05',2,'sss',0,0),
+('2024-10-05',3,'zc',0,0),
+('2024-10-05',4,'ff',0,0);
 /*!40000 ALTER TABLE `ROOM_INFO` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,6 +66,9 @@ CREATE TABLE `USER_INFO` (
   `userId` varchar(11) NOT NULL DEFAULT '',
   `userNm` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '',
   `pw` varchar(60) DEFAULT NULL,
+  `numWin` int(11) DEFAULT 0,
+  `numLose` int(11) DEFAULT 0,
+  `isDel` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -72,11 +80,8 @@ CREATE TABLE `USER_INFO` (
 LOCK TABLES `USER_INFO` WRITE;
 /*!40000 ALTER TABLE `USER_INFO` DISABLE KEYS */;
 INSERT INTO `USER_INFO` VALUES
-('asd','asd','$2a$10$AH7aGjDqRWlQd5eHV8EOneoDI2VoVoQBjJyBcVX6zKfcnGrxr3Rbu'),
-('ewer','qwer','qwer'),
-('FIRST_ID','FIRST_NM',NULL),
-('qwer','qwer','qwer'),
-('xxc','xxc','$2a$10$2lGLqBb29XSIMh14cFP8OusajnaEmgl/XrFAshWApf1yADtr.b9jC');
+('asd','asd','$2a$10$AH7aGjDqRWlQd5eHV8EOneoDI2VoVoQBjJyBcVX6zKfcnGrxr3Rbu',0,0,0),
+('xxc','xxc','$2a$10$2lGLqBb29XSIMh14cFP8OusajnaEmgl/XrFAshWApf1yADtr.b9jC',0,0,0);
 /*!40000 ALTER TABLE `USER_INFO` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -89,4 +94,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-18 18:20:18
+-- Dump completed on 2024-10-05 15:39:28

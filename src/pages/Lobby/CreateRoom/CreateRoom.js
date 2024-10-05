@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import { FetchData } from "components/Util/FetchData";
 import "./CreateRoom.css"
+import { useNavigate } from 'react-router-dom';
 
  
 
 const CreateRoom = ({ closeCreateRoomModal }) => {
   // 모달창 닫히는 함수 props로 가져오기
-
+  const navigate = useNavigate(); // navigate 훅 가져옴
   //전체적인 흐름 완성되면 디테일 추후 구현 예정
   //예)공개/비공개 여부, 비밀번호, 제한 인원수 상태변수 추가해서 진행
   const [title, setTitle] = useState("");
@@ -31,8 +32,7 @@ const CreateRoom = ({ closeCreateRoomModal }) => {
     const result = await FetchData("room/register", postData);
 
     if (result.isSuccess) {
-      alert("방 생성을 완료하였습니다.");
-      // TODO 게임 화면으로 이동
+      navigate(`/room/${result.data}`);
     }
   };
 

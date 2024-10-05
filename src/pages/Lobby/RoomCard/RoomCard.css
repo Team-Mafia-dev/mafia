@@ -16,12 +16,12 @@
   padding-bottom: 6px;
 }
 
-.room-card-no {
+.room-card-seqno {
   font-weight: bold;
   margin: 0;
 }
 
-.room-card-state {
+.room-card-is-started {
   background-color: #444; /* 버튼 배경색 */
   color: white;
   padding: 6px 12px;
@@ -36,13 +36,13 @@
   align-items: center;
 }
 
-.room-card-title {
+.room-card-name {
   font-size: 1.2rem;
   font-weight: bold;
   margin: 0;
 }
 
-.room-card-players {
+.room-card-curr-players {
   font-size: 1.2rem;
   margin: 0;
 }
