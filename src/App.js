@@ -10,7 +10,7 @@ import NotFound from "./pages/NotFound";
 import SignupPage from "./pages/Signup/SignupPage";
 import LoginPage from "./pages/Login/LoginPage";
 import Lobby from "./pages/Lobby/Lobby";
-import Room from "./pages/Room";
+import Room from "./pages/Room/Room";
 
 import "./App.css";
 import theme from "./styles/theme";

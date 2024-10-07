@@ -7,6 +7,7 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
     name: '감자모찌',
+    profileImage: "",
     winRate: 75,
     loseRate: 50,
   });
