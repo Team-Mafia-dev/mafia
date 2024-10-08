@@ -1,5 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import styled from "styled-components";
+import { UserContext } from "context/userContext";
+import { SystemContext } from "context/systemContext";
+
+import Collapsible from "components/Collapsible/Collapsible";
+
 
 // 메시지 리스트를 보여주는 컴포넌트
 const MessageContainer = ({ messages }) => {
@@ -67,6 +72,9 @@ const InputField = ({ onSend }) => {
 // 메인 채팅 컴포넌트
 const Room = () => {
   const [messages, setMessages] = useState([]);
+  const { user } = useContext(UserContext); // useContext로 유저 정보 접근
+  const { dayAndNight } = useContext(SystemContext); //systemContext 정보 접근
+  console.log(dayAndNight);
 
   const getCurrentTime = () => {
     const now = new Date();
@@ -80,13 +88,14 @@ const Room = () => {
       {
         text: message,
         isUser: true,
-        username: "You",
-        profileImage: "",
+        username: user.name,
+        profileImage: user.profileImage,
         timestamp: getCurrentTime()
       }
     ]);
     
     // 상대방의 메시지 예시 추가
+    // 테스트 하기 위한 코드임
     setTimeout(() => {
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -94,7 +103,7 @@ const Room = () => {
           text: "상대방의 답장입니다.",
           isUser: false,
           username: "Player1",
-          profileImage: "https://via.placeholder.com/40",
+          profileImage: user.profileImage,
           timestamp: getCurrentTime()
         }
       ]);
@@ -102,11 +111,24 @@ const Room = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer dayAndNight={dayAndNight}>
       <StyledChatContainer>
         <MessageContainer messages={messages} />
         <InputField onSend={handleSend} />
       </StyledChatContainer>
+  
+      <RoomInfoSection>
+        <h2>{dayAndNight ? "밤이 되었습니다.":"낮이 되었습니다."}</h2>
+
+        <Collapsible title={"직업 투표"}>
+        <p>튜표 이미지들이 들어갈 예정</p>
+        </Collapsible>
+
+        <Collapsible title={"직업 메모"}>
+        <p>참여한 플레이어들 수 만큼 체크박스 이미지들이 들어갈 예정</p>
+        </Collapsible>
+      </RoomInfoSection>
+      
     </PageContainer>
   );
 };
@@ -118,8 +140,9 @@ const PageContainer = styled.div
   justify-content: center;
   align-items: center;
   height: 95vh;
-  background-color: #f0f0f0;
+  background-color: ${(props) => (props.dayAndNight ? "#444a4f" : "#f1f1f1")};
   padding: 10px;
+  gap: 5%;
 `;
 
 const StyledChatContainer = styled.div
@@ -226,5 +249,12 @@ const StyledSendButton = styled.button
   border-radius: 4px;
   cursor: pointer;
 `;
+
+// 오른쪽 정보화면 스타일
+const RoomInfoSection = styled.section
+`
+  width: 400px;
+  padding: 10px
+`
 
 export default Room;
