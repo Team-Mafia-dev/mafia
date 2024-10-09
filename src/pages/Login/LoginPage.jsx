@@ -1,10 +1,12 @@
-import React from "react";
+import React , { useContext }from "react";
 import LoginForm from "./LoginForm/LoginForm";
 import { useNavigate } from "react-router-dom";
 import { FetchData } from "../../components/Util/FetchData";
+import { UserContext } from "context/userContext";
 
 function LoginPage() {
   const navigate = useNavigate(); // navigate 훅 가져옴
+  const { user,setUser } = useContext(UserContext);
 
   const handleLogin = async (userId, password) => {
     try {
@@ -18,8 +20,11 @@ function LoginPage() {
         
         const userDataResult = await FetchData('user');
         const userData = userDataResult.data;
-        console.log(userData);
-        // 여기서 context에 넣어주면 됨. 난 어떻게 하는지 몰겠어
+        //context의 User 상태 정보 변경
+        console.log("before user", user)
+        setUser(userData);
+        console.log("userData",userData);
+        console.log("after user", user)
 
         navigate("/lobby");
       }else{

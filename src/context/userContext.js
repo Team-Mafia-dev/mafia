@@ -8,10 +8,11 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const profileImage = process.env.PUBLIC_URL + "/images/newbi.jpg";
   const [user, setUser] = useState({
-    name: '감자모찌',
+    id: null,
+    name: "",
     profileImage: profileImage,
-    winRate: 75,
-    loseRate: 50,
+    winRate: 0,
+    loseRate: 0,
   });
 
   return (
