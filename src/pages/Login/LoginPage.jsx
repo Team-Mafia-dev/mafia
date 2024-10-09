@@ -15,6 +15,12 @@ function LoginPage() {
 
       if (result.isSuccess) {
         alert("로그인되었습니다.");
+        
+        const userDataResult = await FetchData('user');
+        const userData = userDataResult.data;
+        console.log(userData);
+        // 여기서 context에 넣어주면 됨. 난 어떻게 하는지 몰겠어
+
         navigate("/lobby");
       }else{
         alert(result.msg);
