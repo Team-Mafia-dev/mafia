@@ -6,7 +6,8 @@ import { UserContext } from "context/userContext";
 
 function LoginPage() {
   const navigate = useNavigate(); // navigate 훅 가져옴
-  const { user,setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
+  const profileImage = process.env.PUBLIC_URL + "/images/newbi.jpg";
 
   const handleLogin = async (userId, password) => {
     try {
@@ -20,11 +21,15 @@ function LoginPage() {
         
         const userDataResult = await FetchData('user');
         const userData = userDataResult.data;
+
         //context의 User 상태 정보 변경
-        console.log("before user", user)
-        setUser(userData);
-        console.log("userData",userData);
-        console.log("after user", user)
+        setUser({
+          id: userData.userId || "userId",
+          name: userData.userNm || "userName",
+          profileImage: profileImage || "userProfileImage",
+          winRate: userData.numWin || 0,
+          loseRate: userData.loseWin || 0,
+        });
 
         navigate("/lobby");
       }else{

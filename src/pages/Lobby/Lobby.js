@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import RoomCard from "./RoomCard/RoomCard";
 import CreateRoom from "./CreateRoom/CreateRoom"
 import GameInfo from "./GameInfo/GameInfo"
@@ -6,6 +6,7 @@ import Profile from "./Profile/Profile";
 import ToggleButton from "./ToggleButton/ToggleButton";
 import "./Lobby.css";
 import { FetchData } from "../../components/Util/FetchData";
+import { UserContext } from "context/userContext";
 
 function Lobby() {
   const [roomData, setRoomData] = useState([]);
@@ -18,6 +19,10 @@ function Lobby() {
   // 모달
   const [createRoomModalCondition, setCreateRoomModalCondition] = useState(false);
   const [gameInfoModalCondition, setGameInfoModalCondition] = useState(false);
+  // userContext 유저 정보 접근
+  const { user } = useContext(UserContext);
+  //user 객체 받아오고 접근자로 접근하면 됨
+  console.log("user data in lobby",user)
 
   // 서버로부터 데이터를 가져오는 함수
   const fetchRoomData = async (queryParams) => {
