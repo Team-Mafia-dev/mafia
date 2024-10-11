@@ -26,7 +26,7 @@ function LoginPage() {
         setUser({
           id: userData.userId || "userId",
           name: userData.userNm || "userName",
-          profileImage: profileImage || "userProfileImage",
+          profileImage: userData.profileImage || 0,
           winRate: userData.numWin || 0,
           loseRate: userData.loseWin || 0,
         });

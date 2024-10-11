@@ -1,7 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { UserContext } from "context/userContext";
 import { SystemContext } from "context/systemContext";
+import useWebSocket from "./Hooks/useWebSocket";
 
 import Collapsible from "components/Collapsible/Collapsible";
 import MessageContainer from "./MessageContainer/MessageContainer";
@@ -13,46 +14,66 @@ const Room = () => {
   const [messages, setMessages] = useState([]);
   const { user } = useContext(UserContext); // userContext 유저 정보 접근
   const { dayAndNight } = useContext(SystemContext); //systemContext 정보 접근
+  
+  // 서버에서 타임스탬프 찍어줌
+  // const getCurrentTime = () => {
+  //   const now = new Date();
+  //   return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  // };
 
-  const getCurrentTime = () => {
-    const now = new Date();
-    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  useEffect(()=>{
+    console.log("user!!! : " + user.id);
+  }, []);
+
+  // 메시지를 수신했을 때 처리
+  const handleMessageReceived = (message) => {
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      {
+        text: message.text,
+        isOwner: message.isOwner,
+        username: message.userName,
+        profileImage: user.profileImage, // 유저이미지를 숫자나 text로 가지고 와서 프로필이미지 매니저같은 곳에서 가져오기 message.profileImage || "",
+        timestamp: message.getCurrentTime,
+      },
+    ]);
   };
 
-  const handleSend = (message) => {
+  // // 서버에 해당 유저 정보 등록을 위한 전송
+  const handleConnect = ()=>
+   {
+    console.log("handleCOnnect!!!!");
+    console.log(user);
+    const userInfo = {
+      userId : user.id,
+      userName : user.name,
+      profileImage : user.profileImage,
+      roomdId : '1'   // roomSeqno 받아서 여기에서 보내줘야됨
+    }
+    sendToSocket(process.env.REACT_APP_SOCKET_REGISTER_USER, userInfo);
+  };
+
+  // WebSocket 훅 사용
+  const { sendToSocket } = useWebSocket({
+    onConnect: handleConnect,
+    CHAT_MESSAGE: handleMessageReceived
+  });
+
+  const handleSendMessage = (message) => {
     // 사용자의 메시지로 추가
-    setMessages([
-      ...messages,
-      {
-        text: message,
-        isUser: true,
-        username: user.name,
-        profileImage: user.profileImage,
-        timestamp: getCurrentTime()
-      }
-    ]);
+    const newMessage = {
+      text: message
+    }
     
-    // 상대방의 메시지 예시 추가
-    // 테스트 하기 위한 코드임
-    setTimeout(() => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          text: "상대방의 답장입니다.",
-          isUser: false,
-          username: "Player1",
-          profileImage: user.profileImage,
-          timestamp: getCurrentTime()
-        }
-      ]);
-    }, 1000);
+    // 메시지 전송
+    sendToSocket(process.env.REACT_APP_SOCKET_CHAT_MESSAGE, newMessage);
   };
 
   return (
     <PageContainer dayAndNight={dayAndNight}>
       <StyledChatContainer>
         <MessageContainer messages={messages} />
-        <InputField onSend={handleSend} />
+        <InputField onSend={handleSendMessage} />
       </StyledChatContainer>
   
       <RoomInfoSection>

@@ -40,18 +40,21 @@ LOCK TABLES `ROOM_INFO` WRITE;
 /*!40000 ALTER TABLE `ROOM_INFO` DISABLE KEYS */;
 INSERT INTO `ROOM_INFO` VALUES
 ('2024-09-12',1,NULL,0,0),
-('2024-09-14',1,'테스트입니다.',0,0),
 ('2024-09-14',2,'테스트입니다.',0,0),
-('2024-09-16',1,'테스트입니다.',0,0),
-('2024-09-18',2,'테스트입니다.',1,0),
-('2024-09-18',3,'가나다',0,1),
-('2024-09-18',4,'테스트입니다.',0,0),
-('2024-09-18',5,'테스트입니다.',0,0),
-('2024-10-03',1,'테스트입니다.',0,0),
-('2024-10-05',1,'aaa',0,1),
-('2024-10-05',2,'sss',0,0),
-('2024-10-05',3,'zc',0,0),
-('2024-10-05',4,'ff',0,0);
+('2024-09-14',3,'테스트입니다.',0,0),
+('2024-09-16',4,'테스트입니다.',0,0),
+('2024-09-18',5,'테스트입니다.',1,0),
+('2024-09-18',6,'가나다',0,1),
+('2024-09-18',7,'테스트입니다.',0,0),
+('2024-09-18',8,'테스트입니다.',0,0),
+('2024-10-03',9,'테스트입니다.',0,0),
+('2024-10-05',10,'sss',0,0),
+('2024-10-05',11,'zc',0,0),
+('2024-10-05',12,'ff',0,0),
+('2024-10-05',13,'aaa',0,1),
+('2024-10-07',14,'test',0,0),
+('2024-10-09',15,'aa',0,0),
+('2024-10-09',16,'dd',0,0);
 /*!40000 ALTER TABLE `ROOM_INFO` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,6 +72,7 @@ CREATE TABLE `USER_INFO` (
   `numWin` int(11) DEFAULT 0,
   `numLose` int(11) DEFAULT 0,
   `isDel` tinyint(1) DEFAULT 0,
+  `profileImage` int(11) DEFAULT 0,
   PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -80,8 +84,9 @@ CREATE TABLE `USER_INFO` (
 LOCK TABLES `USER_INFO` WRITE;
 /*!40000 ALTER TABLE `USER_INFO` DISABLE KEYS */;
 INSERT INTO `USER_INFO` VALUES
-('asd','asd','$2a$10$AH7aGjDqRWlQd5eHV8EOneoDI2VoVoQBjJyBcVX6zKfcnGrxr3Rbu',0,0,0),
-('xxc','xxc','$2a$10$2lGLqBb29XSIMh14cFP8OusajnaEmgl/XrFAshWApf1yADtr.b9jC',0,0,0);
+('asd','asd','$2a$10$AH7aGjDqRWlQd5eHV8EOneoDI2VoVoQBjJyBcVX6zKfcnGrxr3Rbu',0,0,0,0),
+('qwe','qwe','$2a$10$6NZeM/a.q5Uz4v/RReDKAu7FdBb8D6QLJNHmCbs0SAPRg7pMHugRO',0,0,0,0),
+('xxc','xxc','$2a$10$2lGLqBb29XSIMh14cFP8OusajnaEmgl/XrFAshWApf1yADtr.b9jC',0,0,0,0);
 /*!40000 ALTER TABLE `USER_INFO` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -94,4 +99,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-05 15:39:28
+-- Dump completed on 2024-10-11 22:11:22

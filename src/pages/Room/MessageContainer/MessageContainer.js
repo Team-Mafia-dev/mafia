@@ -7,22 +7,24 @@ const MessageContainer = ({ messages }) => {
 
   // 메시지가 추가될 때마다 스크롤을 맨 아래로 내리는 효과
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages]);
 
   return (
     <StyledMessageContainer>
       {messages.map((message, index) => (
-        <StyledMessage key={index} isUser={message.isUser}>
-          {!message.isUser && (
+        <StyledMessage key={index} isOwner={message.isOwner}>
+          {!message.isOwner && (
             <ProfileImage src={message.profileImage} alt={message.username} />
           )}
           <MessageContent>
             <MessageHeader>
-              {!message.isUser && <Username>{message.username}</Username>}
+              {!message.isOwner && <Username>{message.username}</Username>}
               <Timestamp>{message.timestamp}</Timestamp>
             </MessageHeader>
-            <MessageBubble isUser={message.isUser}>
+            <MessageBubble isOwner={message.isOwner}>
               {message.text}
             </MessageBubble>
           </MessageContent>
@@ -48,7 +50,7 @@ const StyledMessage = styled.div
 `
   display: flex;
   align-items: center;
-  justify-content: ${(props) => (props.isUser ? "flex-end" : "flex-start")};
+  justify-content: ${(props) => (props.isOwner ? "flex-end" : "flex-start")};
   margin-bottom: 10px;
 `;
 
@@ -88,8 +90,8 @@ const Timestamp = styled.span
 
 const MessageBubble = styled.div
 `
-  background-color: ${(props) => (props.isUser ? "#007bff" : "#e0e0e0")};
-  color: ${(props) => (props.isUser ? "#fff" : "#000")};
+  background-color: ${(props) => (props.isOwner ? "#007bff" : "#e0e0e0")};
+  color: ${(props) => (props.isOwner ? "#fff" : "#000")};
   padding: 8px;
   border-radius: 5px;
   max-width:100%;
