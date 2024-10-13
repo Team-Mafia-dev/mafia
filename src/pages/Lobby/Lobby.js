@@ -7,22 +7,22 @@ import ToggleButton from "./ToggleButton/ToggleButton";
 import "./Lobby.css";
 import { FetchData } from "../../components/Util/FetchData";
 import { UserContext } from "context/userContext";
+import { useCookies } from 'react-cookie'; // 쿠키 사용
 
 function Lobby() {
   const [roomData, setRoomData] = useState([]);
-  // 0전체 1대기중
-  const [stateType, setStateType] = useState(0);
-  // 0방번호 1제목
-  const [searchType, setSearchType] = useState(0);
-  // 검색어를 저장하는 상태
-  const [searchData, setSearchData] = useState('');
+  const [stateType, setStateType] = useState(0); // 0전체 1대기중
+  const [searchType, setSearchType] = useState(0); // 0방번호 1제목
+  const [searchData, setSearchData] = useState(''); // 검색어를 저장하는 상태
   // 모달
   const [createRoomModalCondition, setCreateRoomModalCondition] = useState(false);
   const [gameInfoModalCondition, setGameInfoModalCondition] = useState(false);
-  // userContext 유저 정보 접근
-  const { user } = useContext(UserContext);
-  //user 객체 받아오고 접근자로 접근하면 됨
-  console.log("user data in lobby",user)
+
+  const [roomNumCookies] = useCookies(['roomNum']); // 쿠키 초기화
+  const { user, setUser } = useContext(UserContext);
+
+  console.log("user data in lobby!!",user);
+  console.log("최근 접속한 방번호:", roomNumCookies.roomNum);
 
   // 서버로부터 데이터를 가져오는 함수
   const fetchRoomData = async (queryParams) => {
@@ -40,10 +40,14 @@ function Lobby() {
   };
 
   useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // Context에 저장된 사용자 정보 복구 새로고침시 데이터 유지
+    }
     const queryParams = new URLSearchParams();
     queryParams.append("stateType", stateType); // 상태 필터링에 사용되는 파라미터
     fetchRoomData(queryParams);
-  }, [stateType]);
+  }, [stateType, setUser]);
 
   const handleSearchTypeChange = (e) => {
     setSearchType(parseInt(e.target.value)); // 문자열로 들어오는 값을 숫자로 변환

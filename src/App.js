@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
+import { CookiesProvider } from 'react-cookie';
 
 import Header from "./Header";
 import Footer from "./Footer";
@@ -20,24 +21,26 @@ import { SystemProvider } from "context/systemContext";
 function App() {
   return (
     <ThemeProvider theme={theme}>
-    <SystemProvider>
-    <UserProvider>
-      <div className="App">
-        <BrowserRouter>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Content />}></Route>
-            <Route path="/login" element={<LoginPage />}></Route>
-            <Route path="/signup" element={<SignupPage />}></Route>
-            <Route path="/lobby" element={<Lobby />}></Route>
-            <Route path="/room/:nomberParams" element={<Room />} />
-            <Route path="*" element={<NotFound />}></Route>
-          </Routes>
-          <Footer />
-        </BrowserRouter>
-      </div>
-    </UserProvider>
-    </SystemProvider>
+    <CookiesProvider>
+      <SystemProvider>
+      <UserProvider>
+        <div className="App">
+          <BrowserRouter>
+            <Header />
+            <Routes>
+              <Route path="/" element={<Content />}></Route>
+              <Route path="/login" element={<LoginPage />}></Route>
+              <Route path="/signup" element={<SignupPage />}></Route>
+              <Route path="/lobby" element={<Lobby />}></Route>
+              <Route path="/room/:nomberParams" element={<Room />} />
+              <Route path="*" element={<NotFound />}></Route>
+            </Routes>
+            <Footer />
+          </BrowserRouter>
+        </div>
+      </UserProvider>
+      </SystemProvider>
+    </CookiesProvider>
     </ThemeProvider>
   );
 }

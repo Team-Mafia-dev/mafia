@@ -47,7 +47,8 @@ const useWebSocket = (eventHandlers) => {
         socketRef.current.close();
       }
     };
-  }, []); // onMessageReceived가 변경될 때마다 effect 재실행
+  }, [eventHandlers]); // onMessageReceived가 변경될 때마다 effect 재실행
+  // 의존성 값 추가함 eventHandlers -희성-
 
   const sendToSocket = (type, content) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {

@@ -7,7 +7,7 @@ import { UserContext } from "context/userContext";
 function LoginPage() {
   const navigate = useNavigate(); // navigate 훅 가져옴
   const { setUser } = useContext(UserContext);
-  const profileImage = process.env.PUBLIC_URL + "/images/newbi.jpg";
+  //const profileImage = process.env.PUBLIC_URL + "/images/newbi.jpg";
 
   const handleLogin = async (userId, password) => {
     try {
@@ -21,15 +21,18 @@ function LoginPage() {
         
         const userDataResult = await FetchData('user');
         const userData = userDataResult.data;
-
-        //context의 User 상태 정보 변경
-        setUser({
+        const userInfo = {
           id: userData.userId || "userId",
           name: userData.userNm || "userName",
           profileImage: userData.profileImage || 0,
           winRate: userData.numWin || 0,
           loseRate: userData.loseWin || 0,
-        });
+        };
+         // 사용자 정보를 로컬 스토리지에 저장
+        localStorage.setItem('user', JSON.stringify(userInfo));
+
+        // Context의 상태를 업데이트
+        setUser(userInfo);
 
         navigate("/lobby");
       }else{

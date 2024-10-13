@@ -32,6 +32,7 @@ const CreateRoom = ({ closeCreateRoomModal }) => {
     const result = await FetchData("room/register", postData);
 
     if (result.isSuccess) {
+      //data는 방번호
       navigate(`/room/${result.data}`);
     }
   };

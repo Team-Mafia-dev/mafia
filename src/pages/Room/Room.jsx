@@ -1,5 +1,6 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "context/userContext";
 import { SystemContext } from "context/systemContext";
 import useWebSocket from "./Hooks/useWebSocket";
@@ -7,13 +8,22 @@ import useWebSocket from "./Hooks/useWebSocket";
 import Collapsible from "components/Collapsible/Collapsible";
 import MessageContainer from "./MessageContainer/MessageContainer";
 import InputField from "./InputField/InputField";
+import { useCookies } from 'react-cookie';
 
 
 // 메인 채팅 컴포넌트
 const Room = () => {
+  const navigate = useNavigate();
+  const ROUND_TIME = 10; // 각 라운드 시간 (초 단위)
+
   const [messages, setMessages] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(ROUND_TIME); // 남은 시간 상태
+  const timerRef = useRef(null); // 타이머 참조
+
   const { user } = useContext(UserContext); // userContext 유저 정보 접근
-  const { dayAndNight } = useContext(SystemContext); //systemContext 정보 접근
+  const { dayAndNight, setDayAndNight } = useContext(SystemContext); //systemContext 정보 접근
+
+  const [roomNumCookies] = useCookies(['roomNum']); // 쿠키 값 가져오기 인자로는 key값을 입력하면됨
   
   // 서버에서 타임스탬프 찍어줌
   // const getCurrentTime = () => {
@@ -22,8 +32,37 @@ const Room = () => {
   // };
 
   useEffect(()=>{
-    console.log("user!!! : " + user.id);
+    const roomNum = roomNumCookies.roomNum;
+    console.log('쿠키에서 가져온 값:', roomNum);
+
+    if (!roomNum) {
+      alert('방 번호가 없습니다. 로비로 이동합니다.');
+      navigate('/lobby'); // 방 번호가 없으면 로비로 이동
+    } else {
+      // 서버에서 해당 방 정보를 가져오는 로직
+    }
+
+    startTimer(); // 타이머 시작
+    return () => clearInterval(timerRef.current); // 컴포넌트 언마운트 시 타이머 정리
   }, []);
+
+  // 타이머 시작 함수 (useRef로 타이머 관리)
+  const startTimer = () => {
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          handleRoundChange(); // 라운드 전환
+          return ROUND_TIME; // 새로운 라운드 시작
+        }
+        return prevTime - 1; // 매초 감소
+      });
+    }, 1000);
+  };
+
+  // 라운드 전환 함수
+  const handleRoundChange = () => {
+    setDayAndNight((prev) => !prev); // 낮/밤 전환
+  };
 
   // 메시지를 수신했을 때 처리
   const handleMessageReceived = (message) => {
@@ -42,14 +81,16 @@ const Room = () => {
   // // 서버에 해당 유저 정보 등록을 위한 전송
   const handleConnect = ()=>
    {
-    console.log("handleCOnnect!!!!");
+    console.log("handleConnect!!!!");
     console.log(user);
+    // 쿠키 에 저장된 값 받아와서 적용시키기 roomId에 값 넣기
     const userInfo = {
       userId : user.id,
       userName : user.name,
       profileImage : user.profileImage,
-      roomdId : '1'   // roomSeqno 받아서 여기에서 보내줘야됨
+      roomdId : roomNumCookies.roomNum // roomSeqno 받아서 여기에서 보내줘야됨
     }
+    console.log("handleConnect data:",userInfo)
     sendToSocket(process.env.REACT_APP_SOCKET_REGISTER_USER, userInfo);
   };
 
@@ -78,6 +119,7 @@ const Room = () => {
   
       <RoomInfoSection>
         <h2>{dayAndNight ? "밤이 되었습니다.":"낮이 되었습니다."}</h2>
+        <div className="round-time">`남은 시간: ${timeLeft}초`</div>
 
         <Collapsible title={"직업 투표"}>
         <p>튜표 이미지들이 들어갈 예정</p>
