@@ -30,3 +30,9 @@ SOURCE /dumpfile.sql;				// 덤프파일 넣기
 DROP DATABASE mafia;				// 데이터베이스 삭제(선택)
 CREATE DATABASE mafia;				// 데이터베이스 추가(선택)
 docker save -o spring-app-image.tar mafia-backend:latest
+
+// 레디스
+docker exec -it redis redis-cli  // 레디스 접속
+KEYS *      // 레디스 키 리스트
+GET {id}    // 레디스 키에 대한 값
+FLUSHALL    // 키 전체 삭제
