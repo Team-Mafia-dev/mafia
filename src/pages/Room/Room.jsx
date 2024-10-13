@@ -10,7 +10,6 @@ import MessageContainer from "./MessageContainer/MessageContainer";
 import InputField from "./InputField/InputField";
 import { useCookies } from 'react-cookie';
 
-
 // 메인 채팅 컴포넌트
 const Room = () => {
   const navigate = useNavigate();
@@ -42,27 +41,28 @@ const Room = () => {
       // 서버에서 해당 방 정보를 가져오는 로직
     }
 
-    startTimer(); // 타이머 시작
+    // 타이머 시작 함수 (useRef로 타이머 관리)
+    const startTimer = () => {
+      timerRef.current = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          if (prevTime <= 1) {
+            handleRoundChange(); // 라운드 전환
+            return ROUND_TIME; // 새로운 라운드 시작
+          }
+          return prevTime - 1; // 매초 감소
+        });
+      }, 1000);
+    };
+    startTimer();
+
+    // 라운드 전환 함수
+    const handleRoundChange = () => {
+      setDayAndNight((prev) => !prev); // 낮/밤 전환
+    };
     return () => clearInterval(timerRef.current); // 컴포넌트 언마운트 시 타이머 정리
-  }, []);
+  }, [roomNumCookies.roomNum, navigate, setDayAndNight]);
 
-  // 타이머 시작 함수 (useRef로 타이머 관리)
-  const startTimer = () => {
-    timerRef.current = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime <= 1) {
-          handleRoundChange(); // 라운드 전환
-          return ROUND_TIME; // 새로운 라운드 시작
-        }
-        return prevTime - 1; // 매초 감소
-      });
-    }, 1000);
-  };
-
-  // 라운드 전환 함수
-  const handleRoundChange = () => {
-    setDayAndNight((prev) => !prev); // 낮/밤 전환
-  };
+  
 
   // 메시지를 수신했을 때 처리
   const handleMessageReceived = (message) => {
@@ -119,7 +119,7 @@ const Room = () => {
   
       <RoomInfoSection>
         <h2>{dayAndNight ? "밤이 되었습니다.":"낮이 되었습니다."}</h2>
-        <div className="round-time">`남은 시간: ${timeLeft}초`</div>
+        <div className="round-time">`남은 시간: {timeLeft}초`</div>
 
         <Collapsible title={"직업 투표"}>
         <p>튜표 이미지들이 들어갈 예정</p>
