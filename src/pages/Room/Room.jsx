@@ -20,12 +20,7 @@ const Room = () => {
   const timerRef = useRef(null); // 타이머 참조
 
   const { user } = useContext(UserContext); // userContext 유저 정보 접근
-  const {
-    dayAndNight,
-    setDayAndNight,
-    isStarted,
-    setIsStarted
-  } = useContext(SystemContext); //systemContext 정보 접근
+  const { dayAndNight,setDayAndNight,} = useContext(SystemContext); //systemContext 정보 접근
 
   const [roomNumCookies] = useCookies(['roomNum']); // 쿠키 값 가져오기 인자로는 key값을 입력하면됨
   
