@@ -5,7 +5,7 @@ import GameInfo from "./GameInfo/GameInfo"
 import Profile from "./Profile/Profile";
 import ToggleButton from "./ToggleButton/ToggleButton";
 import "./Lobby.css";
-import { FetchData } from "../../components/Util/FetchData";
+import { FetchData } from "components/Util/FetchData";
 import { UserContext } from "context/userContext";
 import { useCookies } from 'react-cookie'; // 쿠키 사용
 
@@ -45,6 +45,7 @@ function Lobby() {
       setUser(JSON.parse(storedUser)); // Context에 저장된 사용자 정보 복구 새로고침시 데이터 유지
     }
     const queryParams = new URLSearchParams();
+    
     queryParams.append("stateType", stateType); // 상태 필터링에 사용되는 파라미터
     fetchRoomData(queryParams);
   }, [stateType, setUser]);

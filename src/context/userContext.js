@@ -9,8 +9,9 @@ export const UserProvider = ({ children }) => {
     id: null,
     name: "",
     profileImage: null,
-    winRate: 0,
-    loseRate: 0,
+    winCnt: 0,
+    loseCnt: 0,
+    resentRoom: null,
   });
 
   return (

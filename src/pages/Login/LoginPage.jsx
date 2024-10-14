@@ -25,8 +25,9 @@ function LoginPage() {
           id: userData.userId || "userId",
           name: userData.userNm || "userName",
           profileImage: userData.profileImage || 0,
-          winRate: userData.numWin || 0,
-          loseRate: userData.loseWin || 0,
+          winCnt: userData.winCnt || 0,
+          loseCnt: userData.loseCnt || 0,
+          resentRoom: null,
         };
          // 사용자 정보를 로컬 스토리지에 저장
         localStorage.setItem('user', JSON.stringify(userInfo));
