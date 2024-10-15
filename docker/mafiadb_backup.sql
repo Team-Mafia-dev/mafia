@@ -69,8 +69,8 @@ CREATE TABLE `USER_INFO` (
   `userId` varchar(11) NOT NULL DEFAULT '',
   `userNm` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '',
   `pw` varchar(60) DEFAULT NULL,
-  `numWin` int(11) DEFAULT 0,
-  `numLose` int(11) DEFAULT 0,
+  `winCnt` int(11) DEFAULT 0,
+  `loseCnt` int(11) DEFAULT 0,
   `isDel` tinyint(1) DEFAULT 0,
   `profileImage` int(11) DEFAULT 0,
   PRIMARY KEY (`userId`)
@@ -84,7 +84,7 @@ CREATE TABLE `USER_INFO` (
 LOCK TABLES `USER_INFO` WRITE;
 /*!40000 ALTER TABLE `USER_INFO` DISABLE KEYS */;
 INSERT INTO `USER_INFO` VALUES
-('asd','asd','$2a$10$AH7aGjDqRWlQd5eHV8EOneoDI2VoVoQBjJyBcVX6zKfcnGrxr3Rbu',0,0,0,0),
+('asd','asd','$2a$10$AH7aGjDqRWlQd5eHV8EOneoDI2VoVoQBjJyBcVX6zKfcnGrxr3Rbu',3,5,0,0),
 ('qwe','qwe','$2a$10$6NZeM/a.q5Uz4v/RReDKAu7FdBb8D6QLJNHmCbs0SAPRg7pMHugRO',0,0,0,0),
 ('xxc','xxc','$2a$10$2lGLqBb29XSIMh14cFP8OusajnaEmgl/XrFAshWApf1yADtr.b9jC',0,0,0,0);
 /*!40000 ALTER TABLE `USER_INFO` ENABLE KEYS */;
@@ -99,4 +99,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-13 14:20:45
+-- Dump completed on 2024-10-15 22:15:26
