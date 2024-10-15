@@ -17,6 +17,8 @@ import "./App.css";
 import theme from "./styles/theme";
 import { UserProvider } from 'context/userContext';
 import { SystemProvider } from "context/systemContext";
+import PublicRoutes from "hooks/routes/PublicRoutes";
+import PrivateRoutes from "hooks/routes/PrivateRoutes";
 
 function App() {
   return (
@@ -28,12 +30,21 @@ function App() {
           <BrowserRouter>
             <Header />
             <Routes>
-              <Route path="/" element={<Content />}></Route>
-              <Route path="/login" element={<LoginPage />}></Route>
-              <Route path="/signup" element={<SignupPage />}></Route>
-              <Route path="/lobby" element={<Lobby />}></Route>
-              <Route path="/room/:nomberParams" element={<Room />} />
-              <Route path="*" element={<NotFound />}></Route>
+              {/* Public Routes - 세션이 있을 경우 로비로 리다이렉트 */}
+              <Route element={<PublicRoutes />}>
+                <Route path="/" element={<Content />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+              </Route>
+
+              {/* Private Routes - 세션이 없을 경우 홈으로 리다이렉트 */}
+              <Route element={<PrivateRoutes />}>
+                <Route path="/lobby" element={<Lobby />} />
+                <Route path="/room/:numberParams" element={<Room />} />
+              </Route>
+
+              {/* 404 페이지 */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
           </BrowserRouter>

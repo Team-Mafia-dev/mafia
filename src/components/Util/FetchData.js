@@ -36,9 +36,9 @@ export const FetchData = async (
       console.log(response.status);
       const result = await response.json();
 
-      if (!result.isSuccess) {
-        alert(result.msg);
-      }
+      // if (!result.isSuccess) {
+      //   alert(result.msg);
+      // }
   
       return await result;
     } catch (error) {

@@ -31,15 +31,6 @@ const Room = () => {
   // };
 
   useEffect(()=>{
-    const roomNum = roomNumCookies.roomNum;
-    console.log('쿠키에서 가져온 값:', roomNum);
-
-    if (!roomNum) {
-      alert('방 번호가 없습니다. 로비로 이동합니다.');
-      navigate('/lobby'); // 방 번호가 없으면 로비로 이동
-    }
-  },[roomNumCookies.roomNum, navigate])
-  useEffect(()=>{
     // 타이머 시작 함수 (useRef로 타이머 관리)
     const startTimer = () => {
       timerRef.current = setInterval(() => {
@@ -59,10 +50,10 @@ const Room = () => {
       setDayAndNight((prev) => !prev); // 낮/밤 전환
     };
     return () => clearInterval(timerRef.current); // 컴포넌트 언마운트 시 타이머 정리
-  }, [isStarted, setDayAndNight]);
+  }, [setDayAndNight]);
 
   // 메시지를 수신했을 때 처리
-  const handleMessageReceived = (message) => {
+  const callBackMessageReceived = (message) => {
     setMessages((prevMessages) => [
       ...prevMessages,
       {
@@ -76,7 +67,7 @@ const Room = () => {
   };
 
   // // 서버에 해당 유저 정보 등록을 위한 전송
-  const handleConnect = ()=>
+  const callBackConnect = () =>
    {
     console.log("handleConnect!!!!");
     console.log(user);
@@ -85,18 +76,37 @@ const Room = () => {
       userId : user.id,
       userName : user.name,
       profileImage : user.profileImage,
-      roomdId : roomNumCookies.roomNum 
+      roomId : roomNumCookies.roomNum 
     }
     console.log("handleConnect data:",userInfo)
     sendToSocket(process.env.REACT_APP_SOCKET_REGISTER_USER, userInfo);
   };
 
+  // 방나가기 눌렀을 때 다른 유저들이 받는 이벤트
+  const callBackLeaveUser = (user) =>{
+    // 희성 TODO : 유저 리스트 중 해당 유저 삭제
+    console.log(user.userId + "님이 게임을 떠나셨습니다.");
+  }
+
   // WebSocket 훅 사용
-  const { sendToSocket } = useWebSocket({
-    onConnect: handleConnect,
-    CHAT_MESSAGE: handleMessageReceived
+  const { socketConnect, sendToSocket } = useWebSocket({
+    onConnect: callBackConnect,
+    CHAT_MESSAGE: callBackMessageReceived,
+    LEAVE_USER: callBackLeaveUser
   });
 
+  useEffect(()=>{
+    const roomNum = roomNumCookies.roomNum;
+    console.log('쿠키에서 가져온 값:', roomNum);
+
+    if (!roomNum) {
+      alert('방 번호가 없습니다. 로비로 이동합니다.');
+      navigate('/lobby'); // 방 번호가 없으면 로비로 이동
+    }
+    socketConnect();
+  },[roomNumCookies.roomNum, navigate, socketConnect]);
+
+  // 메시지 보내기
   const handleSendMessage = (message) => {
     // 사용자의 메시지로 추가
     const newMessage = {
@@ -107,13 +117,17 @@ const Room = () => {
     sendToSocket(process.env.REACT_APP_SOCKET_CHAT_MESSAGE, newMessage);
   };
 
+  // 방 떠나기
   const handleLeave = () => {
     if(window.confirm("정말 게임을 떠나시겠습니까?")){
+      sendToSocket(process.env.REACT_APP_SOCKET_LEAVE_ROOM);
       navigate('/lobby');
     }else {
       return;
     }
   }
+
+  // 게임 시작
   const handleStart = () =>{
     
   }
@@ -127,7 +141,7 @@ const Room = () => {
       </StyledChatContainer>
   
       <RoomInfoSection>
-        {!isStarted ? (<button onClick={handleStart}>시작하기</button>) : (<h2>진행중</h2>)}
+        <button onClick={handleStart}>시작하기</button>
         <h2>{dayAndNight ? "밤이 되었습니다.":"낮이 되었습니다."}</h2>
         <div className="round-time">남은 시간: {timeLeft}초</div>
 

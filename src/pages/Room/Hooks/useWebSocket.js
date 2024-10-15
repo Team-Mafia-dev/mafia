@@ -1,10 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 const useWebSocket = (eventHandlers) => {
   const socketRef = useRef(null);
 
-  // WebSocket 연결 및 메시지 수신 처리
-  useEffect(() => {
+  const socketConnect = useCallback(() =>{
     console.log("WebSocket 연결 시도");
     // WebSocket 연결
     socketRef.current = new WebSocket(`ws://localhost:8080/ws`);
@@ -47,13 +46,21 @@ const useWebSocket = (eventHandlers) => {
         socketRef.current.close();
       }
     };
-  }, []);
+  },[]);
 
-  const sendToSocket = (type, content) => {
+  const sendToSocket = (type, content = null) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-      const contentWithType = {
-        type: type,
-        ...content
+      let contentWithType;
+      if(content != null){
+        contentWithType = {
+          type: type,
+          ...content
+        }
+      }
+      else{
+        contentWithType = {
+          type: type
+        }
       }
       socketRef.current.send(JSON.stringify(contentWithType));
     } else {
@@ -61,7 +68,7 @@ const useWebSocket = (eventHandlers) => {
     }
   }
 
-  return { sendToSocket };
+  return { socketConnect, sendToSocket };
 };
 
 export default useWebSocket;
