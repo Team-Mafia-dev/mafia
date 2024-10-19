@@ -19,7 +19,7 @@ const Room = () => {
   const [timeLeft, setTimeLeft] = useState(ROUND_TIME); // 남은 시간 상태
   const timerRef = useRef(null); // 타이머 참조
 
-  const { user } = useContext(UserContext); // userContext 유저 정보 접근
+  const { user, setUser } = useContext(UserContext);
   const { dayAndNight,setDayAndNight,} = useContext(SystemContext); //systemContext 정보 접근
 
   const [roomNumCookies] = useCookies(['roomNum']); // 쿠키 값 가져오기 인자로는 key값을 입력하면됨
@@ -53,7 +53,8 @@ const Room = () => {
   }, [setDayAndNight]);
 
   // 메시지를 수신했을 때 처리
-  const callBackMessageReceived = (message) => {
+  const callBackMessageReceived = (response) => {
+    const message = response.data;
     setMessages((prevMessages) => [
       ...prevMessages,
       {
@@ -66,12 +67,11 @@ const Room = () => {
     ]);
   };
 
-  // // 서버에 해당 유저 정보 등록을 위한 전송
-  const callBackConnect = () =>
+  // 서버에 해당 유저 정보 등록을 위한 전송
+  const callBackConnect = async () =>
    {
     console.log("handleConnect!!!!");
     console.log(user);
-    
     const userInfo = {
       userId : user.id,
       userName : user.name,
@@ -82,20 +82,25 @@ const Room = () => {
     sendToSocket(process.env.REACT_APP_SOCKET_REGISTER_USER, userInfo);
   };
 
-  // 방나가기 눌렀을 때 다른 유저들이 받는 이벤트
-  const callBackLeaveUser = (user) =>{
-    // 희성 TODO : 유저 리스트 중 해당 유저 삭제
-    console.log(user.userId + "님이 게임을 떠나셨습니다.");
+  // 방에 있는 플레이어 정보를 받아온다(완료했으니 적용)
+  const callBackSetPlayerInfos = (response) => {
+    // 희성 TODO : 다른 플레이어 리스트도 playerListContext 같이 만들어서 관리해주면 될 것 같다.
+    console.log(response.data);
   }
 
   // WebSocket 훅 사용
   const { socketConnect, sendToSocket } = useWebSocket({
     onConnect: callBackConnect,
     CHAT_MESSAGE: callBackMessageReceived,
-    LEAVE_USER: callBackLeaveUser
+    SET_PLAYERINFOS: callBackSetPlayerInfos
   });
-
+  
   useEffect(()=>{
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // Context에 저장된 사용자 정보 복구 새로고침시 데이터 유지
+    }
+    console.log("user data in room",user);
     const roomNum = roomNumCookies.roomNum;
     console.log('쿠키에서 가져온 값:', roomNum);
 
