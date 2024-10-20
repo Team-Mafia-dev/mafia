@@ -30,27 +30,31 @@ const Room = () => {
   //   return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   // };
 
-  useEffect(()=>{
-    // 타이머 시작 함수 (useRef로 타이머 관리)
-    const startTimer = () => {
-      timerRef.current = setInterval(() => {
-        setTimeLeft((prevTime) => {
-          if (prevTime <= 1) {
-            handleRoundChange(); // 라운드 전환
-            return ROUND_TIME; // 새로운 라운드 시작
-          }
-          return prevTime - 1; // 매초 감소
-        });
-      }, 1000);
-    };
-    startTimer();
+  // useEffect(()=>{
+  //   // 타이머 시작 함수 (useRef로 타이머 관리)
+  //   const startTimer = () => {
+  //     timerRef.current = setInterval(() => {
+  //       setTimeLeft((prevTime) => {
+  //         if (prevTime <= 1) {
+  //           handleRoundChange(); // 라운드 전환
+  //           return ROUND_TIME; // 새로운 라운드 시작
+  //         }
+  //         return prevTime - 1; // 매초 감소
+  //       });
+  //     }, 1000);
+  //   };
+  //   startTimer();
 
-    // 라운드 전환 함수
-    const handleRoundChange = () => {
-      setDayAndNight((prev) => !prev); // 낮/밤 전환
-    };
-    return () => clearInterval(timerRef.current); // 컴포넌트 언마운트 시 타이머 정리
-  }, [setDayAndNight]);
+  //   // 라운드 전환 함수
+  //   const handleRoundChange = () => {
+  //     setDayAndNight((prev) => !prev); // 낮/밤 전환
+  //   };
+  //   return () => clearInterval(timerRef.current); // 컴포넌트 언마운트 시 타이머 정리
+  // }, [setDayAndNight]);
+
+  const handleRoundChange = () => {
+    setDayAndNight((prev) => !prev); // 낮/밤 전환
+  };
 
   // 메시지를 수신했을 때 처리
   const callBackMessageReceived = (response) => {
@@ -68,8 +72,7 @@ const Room = () => {
   };
 
   // 서버에 해당 유저 정보 등록을 위한 전송
-  const callBackConnect = async () =>
-   {
+  const callBackConnect = () => {
     console.log("handleConnect!!!!");
     console.log(user);
     const userInfo = {
@@ -80,19 +83,52 @@ const Room = () => {
     }
     console.log("handleConnect data:",userInfo)
     sendToSocket(process.env.REACT_APP_SOCKET_REGISTER_USER, userInfo);
-  };
+  }
+
+  // 게임 시작 버튼 콜백
+  const callBackGameStart = (response) => {
+    console.log(response.data);
+
+    const data = response.data;
+    const roleNo = data.roleNo; // 0 : 시민, 1 : 마피아, 2 경찰, 3 의사
+    const timeLeft = data.timeLeft; // 남은 시간
+
+    setTimeLeft(timeLeft);
+
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          // 희성아 이건 지금 클라이언트에서 처리해주는데,
+          // 어차피 서버에서 남으시간 계산해서
+          // 밤, 낮 전환도 서버에서 보내줄 거라 여기서는 그냥 시간 뺴는 것만 계속 보여주면 될듯
+          handleRoundChange(); // 라운드 전환
+          return ROUND_TIME; // 새로운 라운드 시작
+        }
+        return prevTime - 1; // 매초 감소
+      });
+    }, 1000);
+  }
+
+  // 서버에서 유저에게 방에서 나가라는 메시지
+  const callBackLeaveRoom = () => {
+    socketDisconnect();
+    navigate('/lobby');
+  }
 
   // 방에 있는 플레이어 정보를 받아온다(완료했으니 적용)
   const callBackSetPlayerInfos = (response) => {
     // 희성 TODO : 다른 플레이어 리스트도 playerListContext 같이 만들어서 관리해주면 될 것 같다.
-    console.log(response.data);
+    // 데이터가 어떻게 생겼는지는 게임 들어가서 콘솔 찍어보면 나와
+    console.log("playerList : " + response.data);
   }
 
   // WebSocket 훅 사용
-  const { socketConnect, sendToSocket } = useWebSocket({
+  const { socketConnect, sendToSocket, socketDisconnect } = useWebSocket({
     onConnect: callBackConnect,
     CHAT_MESSAGE: callBackMessageReceived,
-    SET_PLAYERINFOS: callBackSetPlayerInfos
+    SET_PLAYERINFOS: callBackSetPlayerInfos,
+    LEAVE_ROOM: callBackLeaveRoom,
+    GAME_START: callBackGameStart,
   });
   
   useEffect(()=>{
@@ -126,6 +162,7 @@ const Room = () => {
   const handleLeave = () => {
     if(window.confirm("정말 게임을 떠나시겠습니까?")){
       sendToSocket(process.env.REACT_APP_SOCKET_LEAVE_ROOM);
+      socketDisconnect();
       navigate('/lobby');
     }else {
       return;
@@ -134,7 +171,7 @@ const Room = () => {
 
   // 게임 시작
   const handleStart = () =>{
-    
+    sendToSocket(process.env.REACT_APP_SOCKET_GAME_START);
   }
 
   return (

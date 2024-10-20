@@ -2,9 +2,12 @@ import { useCallback, useEffect, useRef } from "react";
 
 const useWebSocket = (eventHandlers) => {
   const socketRef = useRef(null);
+  const isManuallyClosedRef = useRef(false); // 수동으로 연결을 끊었는지 여부를 추적
 
-  const socketConnect = useCallback(() =>{
+  const socketConnect = useCallback(() => {
     console.log("WebSocket 연결 시도");
+    isManuallyClosedRef.current = false; // 연결을 수동으로 끊지 않았을 때
+
     // WebSocket 연결
     socketRef.current = new WebSocket(`ws://localhost:8080/ws`);
 
@@ -29,11 +32,14 @@ const useWebSocket = (eventHandlers) => {
 
     socketRef.current.onclose = () => {
       console.log("WebSocket 연결 해제됨");
-      // 연결 해제 시 재연결 시도
-      setTimeout(() => {
-        console.log("WebSocket 재연결 시도 중...");
-        socketRef.current = new WebSocket(`ws://localhost:8080/ws`);
-      }, 1000); // 1초 후 재연결
+
+      // 수동으로 끊은 게 아니면 재연결 시도
+      if (!isManuallyClosedRef.current) {
+        setTimeout(() => {
+          console.log("WebSocket 재연결 시도 중...");
+          socketConnect(); // 재연결
+        }, 1000); // 1초 후 재연결
+      }
     };
 
     socketRef.current.onerror = (error) => {
@@ -46,7 +52,16 @@ const useWebSocket = (eventHandlers) => {
         socketRef.current.close();
       }
     };
-  },[]);
+  }, []);
+
+  const socketDisconnect = useCallback(() => {
+    if (socketRef.current) {
+      console.log("수동으로 WebSocket 연결을 끊습니다.");
+      isManuallyClosedRef.current = true; // 수동으로 연결 끊음
+      socketRef.current.close(); // 연결 해제
+    }
+  }, []);
+
 
   const sendToSocket = (type, content = null) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
@@ -68,7 +83,7 @@ const useWebSocket = (eventHandlers) => {
     }
   }
 
-  return { socketConnect, sendToSocket };
+  return { socketConnect, sendToSocket, socketDisconnect };
 };
 
 export default useWebSocket;
