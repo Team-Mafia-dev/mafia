@@ -23,6 +23,7 @@ const Room = () => {
   const { dayAndNight,setDayAndNight,} = useContext(SystemContext); //systemContext 정보 접근
 
   const [roomNumCookies] = useCookies(['roomNum']); // 쿠키 값 가져오기 인자로는 key값을 입력하면됨
+  const storedUser = localStorage.getItem('user');
   
   // 서버에서 타임스탬프 찍어줌
   // const getCurrentTime = () => {
@@ -74,11 +75,10 @@ const Room = () => {
   // 서버에 해당 유저 정보 등록을 위한 전송
   const callBackConnect = () => {
     console.log("handleConnect!!!!");
-    console.log(user);
     const userInfo = {
-      userId : user.id,
-      userName : user.name,
-      profileImage : user.profileImage,
+      userId : storedUser.id,
+      userName : storedUser.name,
+      profileImage : storedUser.profileImage,
       roomId : roomNumCookies.roomNum 
     }
     console.log("handleConnect data:",userInfo)
@@ -132,7 +132,6 @@ const Room = () => {
   });
   
   useEffect(()=>{
-    const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser)); // Context에 저장된 사용자 정보 복구 새로고침시 데이터 유지
     }
@@ -175,7 +174,7 @@ const Room = () => {
   }
 
   return (
-    <PageContainer dayAndNight={dayAndNight}>
+    <PageContainer $dayAndNight={dayAndNight}>
       <StyledChatContainer>
         <button onClick={handleLeave}>나가기</button>
         <MessageContainer messages={messages} />
@@ -187,11 +186,14 @@ const Room = () => {
         <h2>{dayAndNight ? "밤이 되었습니다.":"낮이 되었습니다."}</h2>
         <div className="round-time">남은 시간: {timeLeft}초</div>
 
-        <Collapsible title={"직업 투표"}>
-        <p>튜표 이미지들이 들어갈 예정</p>
+        <Collapsible title={"프로필"}>
+        <p>플레이어 목록 만들거임</p>
+        <div className="profile-box">
+
+        </div>
         </Collapsible>
 
-        <Collapsible title={"직업 메모"}>
+        <Collapsible title={"메모"}>
         <p>참여한 플레이어들 수 만큼 체크박스 이미지들이 들어갈 예정</p>
         </Collapsible>
       </RoomInfoSection>
@@ -210,7 +212,7 @@ const PageContainer = styled.div
   justify-content: center;
   align-items: center;
   height: 95vh;
-  background-color: ${(props) => (props.dayAndNight ? "#444a4f" : "#f1f1f1")};
+  background-color: ${(props) => (props.$dayAndNight ? "#444a4f" : "#f1f1f1")};
   padding: 10px;
   gap: 5%;
 `;
