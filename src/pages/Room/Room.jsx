@@ -8,6 +8,8 @@ import useWebSocket from "./Hooks/useWebSocket";
 import Collapsible from "components/Collapsible/Collapsible";
 import MessageContainer from "./MessageContainer/MessageContainer";
 import InputField from "./InputField/InputField";
+import Card from "./Card"
+import EventCard from "./EventCard"
 import { useCookies } from 'react-cookie';
 
 // 메인 채팅 컴포넌트
@@ -18,6 +20,8 @@ const Room = () => {
   const [messages, setMessages] = useState([]);
   const [timeLeft, setTimeLeft] = useState(ROUND_TIME); // 남은 시간 상태
   const timerRef = useRef(null); // 타이머 참조
+
+  const [systemMessages, setSystemMessages] = useState([]); //시스템 메시지 담을 변수
 
   const { user, setUser } = useContext(UserContext);
   const { dayAndNight,setDayAndNight,} = useContext(SystemContext); //systemContext 정보 접근
@@ -81,13 +85,12 @@ const Room = () => {
       profileImage : storedUser.profileImage,
       roomId : roomNumCookies.roomNum 
     }
-    console.log("handleConnect data:",userInfo)
     sendToSocket(process.env.REACT_APP_SOCKET_REGISTER_USER, userInfo);
   }
 
   // 게임 시작 버튼 콜백
   const callBackGameStart = (response) => {
-    console.log(response.data);
+    // console.log(response.data);
 
     const data = response.data;
     const roleNo = data.roleNo; // 0 : 시민, 1 : 마피아, 2 경찰, 3 의사
@@ -176,13 +179,16 @@ const Room = () => {
   return (
     <PageContainer $dayAndNight={dayAndNight}>
       <StyledChatContainer>
-        <button onClick={handleLeave}>나가기</button>
         <MessageContainer messages={messages} />
+        <EventCard/>
         <InputField onSend={handleSendMessage} />
       </StyledChatContainer>
   
       <RoomInfoSection>
-        <button onClick={handleStart}>시작하기</button>
+        <CardWrapper>
+          <Card />
+        </CardWrapper>
+        <RoomBtn onClick={handleStart}>시작하기</RoomBtn>
         <h2>{dayAndNight ? "밤이 되었습니다.":"낮이 되었습니다."}</h2>
         <div className="round-time">남은 시간: {timeLeft}초</div>
 
@@ -196,8 +202,9 @@ const Room = () => {
         <Collapsible title={"메모"}>
         <p>참여한 플레이어들 수 만큼 체크박스 이미지들이 들어갈 예정</p>
         </Collapsible>
+
+        <RoomBtn onClick={handleLeave}>나가기</RoomBtn>
       </RoomInfoSection>
-      
     </PageContainer>
   );
 };
@@ -242,3 +249,50 @@ const RoomInfoSection = styled.section
   width: 400px;
   padding: 10px
 `
+const CardWrapper = styled.div
+`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px; // 필요에 따라 여백 추가
+`;
+
+const RoomBtn = styled.button
+`
+  position: relative;
+  background: #1a1a1a;
+  color: #fff;
+  z-index: 1;
+  overflow: hidden;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+
+  &::after {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 100%;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    background: #ff6161;
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    color: #1a1a1a;
+  }
+
+  &:hover::after {
+    left: 0;
+    width: 100%;
+  }
+
+  &:active {
+    top: 2px;
+  }
+`;
