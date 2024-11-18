@@ -13,6 +13,7 @@ import Card from "./Card"
 import EventCard from "./EventCard"
 import ClickableBox from "components/ClickableBox/ClickableBox";
 import { useCookies } from 'react-cookie';
+import { GameState } from "./GameState";
 
 // 메인 채팅 컴포넌트
 const Room = () => {
@@ -88,13 +89,13 @@ const Room = () => {
   };
   
 
-  const callBackSetTime = (response) => {
-    setTime(response.data);
+  const callBackSetTime = (res) => {
+    setTime(res.data);
   };
 
   // 메시지를 수신했을 때 처리
-  const callBackMessageReceived = (response) => {
-    const message = response.data;
+  const callBackMessageReceived = (res) => {
+    const message = res.data;
     setMessages((prevMessages) => [
       ...prevMessages,
       {
@@ -129,11 +130,23 @@ const Room = () => {
     sendToSocket(process.env.REACT_APP_SOCKET_REGISTER_USER, userInfo);
   }
 
-  // 게임 시작 버튼 콜백
-  const callBackGameStart = (response) => {
-    console.log(response.data);
+  const callBackSetGameState = (res) => {
+    console.log(res.data);
+    const data = res.data;
+    const leftTime = data.leftTime;
 
-    const data = response.data;
+    setTime(leftTime)
+
+    const msg = GameState(data.resultCode, data.playerNoInfo);
+
+    console.log(msg);
+  }
+
+  // 게임 시작 버튼 콜백
+  const callBackGameStart = (res) => {
+    console.log(res.data);
+
+    const data = res.data;
     const roleNo = data.roleNo; // 0 : 시민, 1 : 마피아, 2 경찰, 3 의사
     const timeLeft = data.timeLeft; // 남은 시간
 
@@ -147,10 +160,10 @@ const Room = () => {
   }
 
   // 방에 있는 플레이어 정보를 받아온다(완료했으니 적용)
-  const callBackSetPlayerInfos = (response) => {
+  const callBackSetPlayerInfos = (res) => {
     // 희성 TODO : 다른 플레이어 리스트도 playerListContext 같이 만들어서 관리해주면 될 것 같다.
     // 데이터가 어떻게 생겼는지는 게임 들어가서 콘솔 찍어보면 나와
-    setPlayerList(response.data);
+    setPlayerList(res.data);
   }
 
   const setTime = (timeLeft) => {
@@ -185,7 +198,8 @@ const Room = () => {
     SET_PLAYERINFOS: callBackSetPlayerInfos,
     LEAVE_ROOM: callBackLeaveRoom,
     GAME_START: callBackGameStart,
-    SET_TIME: callBackSetTime
+    SET_TIME: callBackSetTime,
+    SET_GAME_STATE : callBackSetGameState,
   });
   
   useEffect(()=>{
