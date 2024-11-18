@@ -45,7 +45,7 @@ const useWebSocket = (eventHandlers) => {
     socketRef.current.onerror = (error) => {
       console.error("WebSocket 오류:", error);
     };
-
+    
     // 컴포넌트 언마운트 시 WebSocket 연결 해제
     return () => {
       if (socketRef.current) {

@@ -17,13 +17,16 @@ import "./App.css";
 import theme from "./styles/theme";
 import { UserProvider } from 'context/userContext';
 import { SystemProvider } from "context/systemContext";
+import { PlayerListProvider } from "context/playerListContext"
 import PublicRoutes from "hooks/routes/PublicRoutes";
 import PrivateRoutes from "hooks/routes/PrivateRoutes";
+
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
     <CookiesProvider>
+      <PlayerListProvider>
       <SystemProvider>
       <UserProvider>
         <div className="App">
@@ -51,6 +54,7 @@ function App() {
         </div>
       </UserProvider>
       </SystemProvider>
+      </PlayerListProvider>
     </CookiesProvider>
     </ThemeProvider>
   );

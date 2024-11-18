@@ -4,8 +4,6 @@ import { FetchData } from "components/Util/FetchData";
 import "./CreateRoom.css"
 import { useNavigate } from 'react-router-dom';
 
- 
-
 const CreateRoom = ({ closeCreateRoomModal }) => {
   // 모달창 닫히는 함수 props로 가져오기
   const navigate = useNavigate(); // navigate 훅 가져옴

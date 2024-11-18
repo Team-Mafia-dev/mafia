@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "context/userContext";
 import { SystemContext } from "context/systemContext";
+import { PlayerListContext } from "context/playerListContext";
 import useWebSocket from "./Hooks/useWebSocket";
 
 import Collapsible from "components/Collapsible/Collapsible";
@@ -10,24 +11,46 @@ import MessageContainer from "./MessageContainer/MessageContainer";
 import InputField from "./InputField/InputField";
 import Card from "./Card"
 import EventCard from "./EventCard"
+import ClickableBox from "components/ClickableBox/ClickableBox";
 import { useCookies } from 'react-cookie';
 
 // 메인 채팅 컴포넌트
 const Room = () => {
   const navigate = useNavigate();
   const ROUND_TIME = 10; // 각 라운드 시간 (초 단위)
+  const storedUser = localStorage.getItem('user');
 
   const [messages, setMessages] = useState([]);
+  const [systemMessages, setSystemMessages] = useState([]); //시스템 메시지 담을 변수
+  const [roleModalCondition, setRoleModalCondition] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0); // 남은 시간 상태
   const timerRef = useRef(null); // 타이머 참조
 
-  const [systemMessages, setSystemMessages] = useState([]); //시스템 메시지 담을 변수
-
   const { user, setUser } = useContext(UserContext);
+  const { playerList, setPlayerList,} = useContext(PlayerListContext); //PlayerListContext 정보 접근
   const { dayAndNight,setDayAndNight,} = useContext(SystemContext); //systemContext 정보 접근
 
   const [roomNumCookies] = useCookies(['roomNum']); // 쿠키 값 가져오기 인자로는 key값을 입력하면됨
-  const storedUser = localStorage.getItem('user');
+
+  // demo 파일 
+  const [playerListDemo, setPlayerListDemo] = useState([]);
+  useEffect(() => {
+    // JSON 파일 가져오기
+    fetch('/data/playerListDemo.json')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setPlayerListDemo(data.playerNoInfos); // 데이터 상태에 저장
+      })
+      .catch((error) => {
+        console.error('JSON 파일을 가져오는데 실패했습니다:', error);
+      });
+  }, []);
+  //console.log("playerListDemo",playerListDemo)
   
   // 서버에서 타임스탬프 찍어줌
   // const getCurrentTime = () => {
@@ -57,9 +80,13 @@ const Room = () => {
   //   return () => clearInterval(timerRef.current); // 컴포넌트 언마운트 시 타이머 정리
   // }, [setDayAndNight]);
 
-  const handleRoundChange = () => {
-    setDayAndNight((prev) => !prev); // 낮/밤 전환
+  const openRoleModal = () => setRoleModalCondition(prev => !prev);
+  const handleRoundChange = () => setDayAndNight(prev => !prev);
+  const [activeTab, setActiveTab] = useState("profile"); // 활성 탭 관리
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
   };
+  
 
   const callBackSetTime = (response) => {
     setTime(response.data);
@@ -123,7 +150,7 @@ const Room = () => {
   const callBackSetPlayerInfos = (response) => {
     // 희성 TODO : 다른 플레이어 리스트도 playerListContext 같이 만들어서 관리해주면 될 것 같다.
     // 데이터가 어떻게 생겼는지는 게임 들어가서 콘솔 찍어보면 나와
-    console.log("playerList : " + response.data);
+    setPlayerList(response.data);
   }
 
   const setTime = (timeLeft) => {
@@ -202,7 +229,7 @@ const Room = () => {
   const handleStart = () =>{
     sendToSocket(process.env.REACT_APP_SOCKET_GAME_START);
   }
-
+  console.log(playerList.playerNoInfos[0])
   return (
     <PageContainer $dayAndNight={dayAndNight}>
       <StyledChatContainer>
@@ -213,25 +240,52 @@ const Room = () => {
   
       <RoomInfoSection>
         <CardWrapper>
-          <Card />
+          
         </CardWrapper>
         <RoomBtn onClick={handleStart}>시작하기</RoomBtn>
+        <RoomBtn onClick={openRoleModal}>직업확인</RoomBtn>
         <h2>{dayAndNight ? "밤이 되었습니다.":"낮이 되었습니다."}</h2>
         <div className="round-time">남은 시간: {timeLeft}초</div>
+        {/* Toggleable Tabs */}
+        <TabWrapper>
+          <TabButton
+            isActive={activeTab === "profile"}
+            onClick={() => handleTabClick("profile")}
+          >
+            프로필
+          </TabButton>
+          <TabButton
+            isActive={activeTab === "memo"}
+            onClick={() => handleTabClick("memo")}
+          >
+            메모
+          </TabButton>
+        </TabWrapper>
 
-        <Collapsible title={"프로필"}>
-        <p>플레이어 목록 만들거임</p>
-        <div className="profile-box">
-
-        </div>
-        </Collapsible>
-
-        <Collapsible title={"메모"}>
-        <p>참여한 플레이어들 수 만큼 체크박스 이미지들이 들어갈 예정</p>
-        </Collapsible>
-
+        <ContentWrapper>
+          {activeTab === "profile" && (
+            <ProfileBox>
+              {playerListDemo.map((player) => (
+                <ClickableBox
+                  key={player.playerNo}
+                  playerNo={player.playerNo}
+                  playerName={player.playerName}
+                />
+              ))}
+            </ProfileBox>
+          )}
+          {activeTab === "memo" && (
+            <MemoContent>
+              <p>참여한 플레이어들 수 만큼 체크박스 이미지들이 들어갈 예정</p>
+            </MemoContent>
+          )}
+        </ContentWrapper>
         <RoomBtn onClick={handleLeave}>나가기</RoomBtn>
       </RoomInfoSection>
+      {roleModalCondition && (
+      <Card
+      closeRoleModal={() => setRoleModalCondition(!roleModalCondition)}/>
+      )}
     </PageContainer>
   );
 };
@@ -287,12 +341,13 @@ const CardWrapper = styled.div
 const RoomBtn = styled.button
 `
   position: relative;
-  background: #1a1a1a;
+  background: #222;
   color: #fff;
   z-index: 1;
   overflow: hidden;
   border: none;
   padding: 10px 20px;
+  margin-bottom: 5px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
@@ -322,4 +377,45 @@ const RoomBtn = styled.button
   &:active {
     top: 2px;
   }
+`;
+
+const ProfileBox = styled.div
+`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 35px;
+`
+const TabWrapper = styled.div
+`
+  display: flex;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 20px;
+`;
+
+const TabButton = styled.button
+`
+  flex: 1;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: ${(props) => (props.isActive ? "#ddd" : "#f9f9f9")};
+  border: none;
+  border-bottom: ${(props) => (props.isActive ? "2px solid black" : "2px solid transparent")};
+
+  &:hover {
+    background-color: #eee;
+  }
+`;
+const ContentWrapper = styled.div
+`
+  padding: 5px;
+  height: 565px;
+`;
+const MemoContent = styled.div
+`
+  padding: 10px;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 `;
